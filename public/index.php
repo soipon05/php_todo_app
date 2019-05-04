@@ -37,7 +37,7 @@ $todos = $todoApp->getAll();
                 <input type="checkbox" class="update_todo" <?php if ($todo->state === '1') {
                     echo 'checked'; } ?>>
                 <span class="todo-title <?php if ($todo->state === '1') { echo 'done'; } ?>"><?= h($todo->title); ?></span>
-                <div class="delete_todo">x</div>
+                <div class="delete-todo">x</div>
             </li>
         <?php endforeach; ?>
         </ul>
