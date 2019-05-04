@@ -29,12 +29,12 @@ $todos = $todoApp->getAll();
         <form action="">
             <input type="text" id="new_todo" placeholder="What needs to be done?">
         </form>
-        <ul>
+        <ul id="todos">
         <?php foreach ($todos as $todo) : ?>
-            <li>
-                <input type="checkbox" <?php if ($todo->state === '1') {
+            <li id="todo_<?= h($todo->id); ?>" data-id="<?= h($todo->id); ?>">
+                <input type="checkbox" class="update_todo" <?php if ($todo->state === '1') {
                     echo 'checked'; } ?>>
-                <span class="<?php if ($todo->state === '1') { echo 'done'; } ?>"><?= h($todo->title); ?></span>
+                <span class="todo-title <?php if ($todo->state === '1') { echo 'done'; } ?>"><?= h($todo->title); ?></span>
                 <div class="delete_todo">x</div>
             </li>
         <?php endforeach; ?>
