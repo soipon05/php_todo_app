@@ -2,6 +2,15 @@
 
 require_once(__DIR__ . '/config.php');
 require_once(__DIR__ . '/functions.php');
+require_once(__DIR__ . '/Todo.php');
+
+
+// get todos
+$todoApp = new \MyApp\Todo();
+$todos = $todoApp->getAll();
+
+// var_dump($todos);
+// exit;
 
 ?>
 
@@ -21,16 +30,14 @@ require_once(__DIR__ . '/functions.php');
             <input type="text" id="new_todo" placeholder="What needs to be done?">
         </form>
         <ul>
+        <?php foreach ($todos as $todo) : ?>
             <li>
-                <input type="checkbox">
-                <span>Do something!</span>
+                <input type="checkbox" <?php if ($todo->state === '1') {
+                    echo 'checked'; } ?>>
+                <span class="<?php if ($todo->state === '1') { echo 'done'; } ?>"><?= h($todo->title); ?></span>
                 <div class="delete_todo">x</div>
             </li>
-            <li>
-                <input type="checkbox" checked>
-                <span class="done">Do something again!</span>
-                <div class="delete_todo">x</div>
-            </li>
+        <?php endforeach; ?>
         </ul>
     </div>
 </body>
