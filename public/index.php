@@ -28,7 +28,7 @@ $todos = $todoApp->getAll();
 <body>
     <div id="container">
         <h1>Todos</h1>
-        <form action="">
+        <form action="" id="new_todo_form">
             <input type="text" id="new_todo" placeholder="What needs to be done?">
         </form>
         <ul id="todos">
@@ -40,6 +40,11 @@ $todos = $todoApp->getAll();
                 <div class="delete-todo">x</div>
             </li>
         <?php endforeach; ?>
+            <li id="todo_template" data-id="">
+                <input type="checkbox" class="update_todo">
+                <span class="todo-title"></span>
+                <div class="delete-todo">x</div>
+            </li>
         </ul>
     </div>
     <input type="hidden" id="token" value="<?= h($_SESSION['token']); ?>">

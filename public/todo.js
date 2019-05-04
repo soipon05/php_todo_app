@@ -1,6 +1,8 @@
 $(function () {
     "use strict";
 
+    $('#new_todo').focus();
+
     //update
     $("#todos").on("click", ".update_todo", function () {
         // idを取得
@@ -33,5 +35,27 @@ $(function () {
                 $('#todo_' + id).fadeOut(800);
             });
         }
+    });
+
+    // create
+    $('#new_todo_form').on('submit', function () {
+        // titleを取得
+        var title = $('#new_todo').val();
+        // ajax
+        $.post('_ajax.php', {
+            title: title,
+            mode: 'create',
+            token: $('#token').val()
+        }, function (res) {
+            // li
+            var $li = $('#todo_template').clone();
+            $li
+                .attr('id', 'todo_' + res.id)
+                .data('id', res.id)
+                .find('.todo-title').text(title);
+            $('#todos').prepend($li.fadeIn());
+            $('#new_todo').val('').focus();
+        });
+        return false;
     });
 });
