@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once(__DIR__ . '/config.php');
 require_once(__DIR__ . '/functions.php');
 require_once(__DIR__ . '/Todo.php');
@@ -40,6 +42,7 @@ $todos = $todoApp->getAll();
         <?php endforeach; ?>
         </ul>
     </div>
+    <input type="hidden" id="token" value="<?= h($_SESSION['token']); ?>">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="todo.js"></script>
 </body>

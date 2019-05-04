@@ -1,11 +1,18 @@
 <?php
 
+// CSRF対策
+// Token発行してSessionに格納
+// フォームからもTokenを発行、送信
+// Check
+
 namespace MyApp;
 
 class Todo {
     private $_db;
 
     public function __construct() {
+        $this->_createToken();
+
         try {
             $this->_db = new \PDO(DSN, DB_USERNAME, DB_PASSWORD);
             $this->_db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -14,12 +21,20 @@ class Todo {
             exit;
         }
     }
+
+    private function _createToken() {
+        if (!isset($_SESSION['token'])) {
+            $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(16));
+        }
+    }
     public function getAll() {
         $stmt = $this->_db->query("select * from todos order by id desc");
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
     public function post() {
+        $this->_validateToken();
+
         if(!isset($_POST['mode'])) {
             throw new \Exception('mode not set!');
         }
@@ -31,6 +46,16 @@ class Todo {
                 return $this->_create();
             case 'delete':
                 return $this->_delete();
+        }
+    }
+
+    private function _validateToken() {
+        if (
+            !isset($_SESSION['token']) ||
+            !isset($_POST['token']) ||
+            $_SESSION['token'] !== $_POST['token']
+        ) {
+            throw new \Exception('invalid token');
         }
     }
 
